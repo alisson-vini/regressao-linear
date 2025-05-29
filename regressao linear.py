@@ -32,30 +32,51 @@ class Perceptron: # cria uma classe pra representar um perceptron simples
 
 entrada_x = [1,2,3,4,5,6] # conjunto de entradas x
 saida_y = [20,10,7,11,5,2] # conjunto de entradas y
+x_vals = np.linspace(min(entrada_x), max(entrada_x), 100) # cria um vetor x para plotar a reta
+fig, ( (graf1,graf2), (graf3,graf4) ) = plt.subplots(nrows=2, ncols=2, figsize=(13,8))
 
 
 neuronio = Perceptron() # cria o perceptron
-neuronio.treinamento(entrada_x, saida_y, 100, 0.01) # treina ele 1000 vezes (pode alterar para ver o precesso de aprendizagem)
+
+y_0_treinos = [neuronio.hipotese(x) for x in x_vals]
+
+neuronio.treinamento(entrada_x, saida_y, 10, 0.01) # treina ele 1000 vezes (pode alterar para ver o precesso de aprendizagem)
+y_10_treinos = [neuronio.hipotese(x) for x in x_vals]
+
+neuronio.treinamento(entrada_x, saida_y, 40, 0.01) # treina ele 1000 vezes (pode alterar para ver o precesso de aprendizagem)
+y_50_treinos = [neuronio.hipotese(x) for x in x_vals]
+
+neuronio.treinamento(entrada_x, saida_y, 50, 0.01) # treina ele 1000 vezes (pode alterar para ver o precesso de aprendizagem)
+y_100_treinos = [neuronio.hipotese(x) for x in x_vals]
 
 for entrada in entrada_x:
     print( round(neuronio.hipotese(entrada),2) ) # printa a hipotese do perceptron dado o conjunto de entradas
 
+graf1.set_title("sem treino", fontsize=10)
+graf1.scatter(entrada_x, saida_y, color='orange', label='ponto real')
+graf1.grid()
+graf1.legend()
+graf1.plot(x_vals, y_0_treinos, linewidth=2)
 
-
-
-x_vals = np.linspace(min(entrada_x), max(entrada_x), 100) # cria um vetor x para plotar a reta
-
-y_vals = [neuronio.hipotese(x) for x in x_vals] # calcula as previsões da reta para esses x
-
-plt.scatter(entrada_x, saida_y, color='red', label='Dados Reais') # plot dos pontos reais
-
-plt.plot(x_vals, y_vals, color='blue', label='Reta Ajustada (hipótese)') # plot da reta ajustada
-
-# informações do gráfico
-plt.xlabel('Entrada (x)')
-plt.ylabel('Saída (y)')
-plt.title('Regressão Linear com Perceptron')
+graf2.set_title("10 iterações de treino", fontsize=10)
+graf2.scatter(entrada_x, saida_y, color='orange', label='ponto real')
+graf2.grid()
+graf2.legend()
+graf2.plot(x_vals, y_10_treinos, linewidth=2)
 plt.legend()
-plt.grid(True)
+
+graf3.set_title("50 iterações de treino", fontsize=10)
+graf3.scatter(entrada_x, saida_y, color='orange', label='ponto real')
+graf3.grid()
+graf3.legend()
+graf3.plot(x_vals, y_50_treinos, linewidth=2)
+plt.legend()
+
+graf4.set_title("100 iterações de treino", fontsize=10)
+graf4.scatter(entrada_x, saida_y, color='orange', label='ponto real')
+graf4.legend()
+graf4.grid()
+graf4.plot(x_vals, y_100_treinos, linewidth=2)
 
 plt.show() # exibe o gráfico
+
