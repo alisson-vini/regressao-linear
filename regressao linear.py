@@ -14,7 +14,7 @@ class Perceptron: # cria uma classe pra representar um perceptron simples
         return self.peso * x + self.vies
 
 
-    # atualiza o peso e vies dada uma entrada e saida esperada
+    # atualiza o peso e vies dada uma entrada e saida esperada (a função de custo utilizada foi a MSE)
     def atualizar_pesos(self, entrada,valor_real, taxa_aprendizagem):
         somatorio_gradiente_peso = 0
         somatorio_gradiente_vies = 0
@@ -26,8 +26,8 @@ class Perceptron: # cria uma classe pra representar um perceptron simples
             somatorio_gradiente_vies += erro
 
         # atualiza o peso e o vies
-        self.peso += 2 * taxa_aprendizagem * somatorio_gradiente_peso
-        self.vies += 2 * taxa_aprendizagem * somatorio_gradiente_vies
+        self.peso += (taxa_aprendizagem * somatorio_gradiente_peso) / len(entrada)
+        self.vies += (taxa_aprendizagem * somatorio_gradiente_vies) / len(entrada)
 
 
     # treina o perceptron por x epocas
@@ -38,12 +38,12 @@ class Perceptron: # cria uma classe pra representar um perceptron simples
 
 
 
-# pode alterar, acrescentar ou retirar valores dos conjuntos de entrada e saída para alterar a reta que vai ser criada
-entrada_x = [1,2,3,4,5,6] # conjunto de entradas x
-saida_y = [20,10,7,11,5,2] # conjunto de entradas y
+# pode alterar, acrescentar ou retirar valores dos conjuntos de entrada e saída para alterar a reta que vai ser criada desde que as listas de x e y tenham a mesma quantidade de elementos
+entrada_x = [0.5, 1.7, 2.4, 4.1, 5.9, 6.3, 7.0, 8.8, 10.2, 12.0] # conjunto de entradas x
+saida_y   = [20.1, 18.3, 17.5, 15.6, 13.2, 12.6, 11.4, 9.7, 7.9, 6.2] # conjunto de entradas y
 neuronio = Perceptron() # cria o perceptron
 
-x_vals = np.linspace(min(entrada_x), max(entrada_x), 100) # cria um vetor contendo varios valores para plotar a reta
+x_vals = np.linspace(min(entrada_x), max(entrada_x), 250) # cria um vetor contendo varios valores para plotar a reta
 fig, ( (graf1,graf2), (graf3,graf4) ) = plt.subplots(nrows=2, ncols=2, figsize=(13,8)) # inicializa os gráficos
 
 
@@ -55,12 +55,12 @@ y_0_treinos = [neuronio.hipotese(x) for x in x_vals]
 neuronio.treinamento(entrada_x, saida_y, 10, 0.01)
 y_10_treinos = [neuronio.hipotese(x) for x in x_vals] # salva um vetor com cada hipotese gerada pelo perceptron para os valores de x_vals (com 10 treinos ao todo)
 
-# treina o perceptron 40 vezes
-neuronio.treinamento(entrada_x, saida_y, 40, 0.01)
+# treina o perceptron 500 vezes
+neuronio.treinamento(entrada_x, saida_y, 490, 0.01)
 y_50_treinos = [neuronio.hipotese(x) for x in x_vals] # salva um vetor com cada hipotese gerada pelo perceptron para os valores de x_vals (com 50 treinos ao todo)
 
-# treina ele 50 vezes
-neuronio.treinamento(entrada_x, saida_y, 50, 0.01)
+# treina ele 2000 vezes
+neuronio.treinamento(entrada_x, saida_y, 1500, 0.01)
 y_100_treinos = [neuronio.hipotese(x) for x in x_vals] # salva um vetor com cada hipotese gerada pelo perceptron para os valores de x_vals (com 100 treinos ao todo)
 
 # printa a hipotese final do perceptron dado o conjunto de entradas
@@ -82,15 +82,15 @@ graf2.grid()
 graf2.legend()
 graf2.plot(x_vals, y_10_treinos, linewidth=2)
 
-# configura o grafico (50 iterações de treino)
-graf3.set_title("50 iterações de treino", fontsize=10)
+# configura o grafico (500 iterações de treino)
+graf3.set_title("500 iterações de treino", fontsize=10)
 graf3.scatter(entrada_x, saida_y, color='orange', label='ponto real')
 graf3.grid()
 graf3.legend()
 graf3.plot(x_vals, y_50_treinos, linewidth=2)
 
-# configura o grafico (100 iterações de treino)
-graf4.set_title("100 iterações de treino", fontsize=10)
+# configura o grafico (2000 iterações de treino)
+graf4.set_title("2000 iterações de treino", fontsize=10)
 graf4.scatter(entrada_x, saida_y, color='orange', label='ponto real')
 graf4.legend()
 graf4.grid()
